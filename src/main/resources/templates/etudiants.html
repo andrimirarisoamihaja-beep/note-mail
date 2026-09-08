@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NOTE MAIL - Liste des Étudiants</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <div class="page-container">
+        <!-- Barre du haut -->
+        <div class="top-bar">
+            <a th:href="@{/}" class="btn-back">&larr; Accueil</a>
+            
+            <div class="search-box">
+                <span class="search-label">Recherche</span>
+                <input type="text" id="searchInput" class="search-input" onkeyup="filtrerTableau()" placeholder="Nom, matricule...">
+            </div>
+        </div>
+
+        <!-- Tableau des étudiants -->
+        <div class="table-container">
+            <table class="custom-table" id="etudiantsTable">
+                <thead>
+                    <tr>
+                        <th>Matricule</th>
+                        <th>Nom complet</th>
+                        <th>adresse mail</th>
+                        <th>Niveau</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="e : ${etudiants}" th:attr="data-matricule=${e.matricule}">
+                        <td th:text="${e.matricule}">3031</td>
+                        <td th:text="${e.nomComplet}">RANDRIANASOLO Arman</td>
+                        <td th:text="${e.email}">rndr@gmail.com</td>
+                        <td th:text="${e.niveau}">L3</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Bouton d'ouverture du modal -->
+        <button class="btn-neon" onclick="ouvrirModalFormulaire()">Envoyer un relevé de note</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 🪟 MODAL 1 : FORMULAIRE D'ENVOI                              -->
+    <!-- ============================================================ -->
+    <div id="modalFormulaire" class="modal-overlay">
+        <div class="modal-card">
+            <form id="formEnvoiMail" onsubmit="soumettreFormulaire(event)">
+                
+                <!-- MATRICULE : Liste déroulante -->
+                <div class="form-group">
+                    <label class="form-label">Matricule</label>
+                    <select id="matriculeInput" name="matricule" class="form-control" required
+                            onchange="onMatriculeChange()">
+                        <option value="" disabled selected>-- Choisir un matricule --</option>
+                        <option th:each="e : ${etudiants}"
+                                th:value="${e.matricule}"
+                                th:text="${e.matricule + ' — ' + e.nomComplet}"
+                                th:attr="data-email=${e.email}, data-niveau=${e.niveau}">
+                            3031 — RANDRIANASOLO Arman
+                        </option>
+                    </select>
+                </div>
+
+                <!-- EMAIL : pré-rempli automatiquement (lecture seule) -->
+                <div class="form-group">
+                    <div>
+                        <label class="form-label">Adresse mail</label>
+                        <span class="form-sublabel">*confirmé automatiquement</span>
+                    </div>
+                    <input type="email" id="emailInput" name="email" class="form-control" 
+                           required readonly placeholder="Sélectionnez un matricule">
+                </div>
+
+                <!-- ANNÉES : Liste déroulante -->
+                <div class="form-group">
+                    <label class="form-label">Années</label>
+                    <select id="anneesInput" name="annees" class="form-control" required>
+                        <option value="L1">L1</option>
+                        <option value="L2">L2</option>
+                        <option value="L3" selected>L3</option>
+                        <option value="L1-L2">L1-L2</option>
+                        <option value="L2-L3">L2-L3</option>
+                        <option value="L1-L3">L1-L3</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="fermerModalFormulaire()">&larr; Annuler</button>
+                    <button type="submit" class="btn-send">Envoyer &rarr;</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 🪟 MODAL 2 : CONFIRMATION SUCCÈS / ERREUR                   -->
+    <!-- ============================================================ -->
+    <div id="modalConfirmation" class="modal-overlay">
+        <div class="modal-card modal-confirm-content">
+            <div id="confirmIcon" class="confirm-icon">✅</div>
+            <h2 id="confirmTitle" class="confirm-title">Envoi réussi !</h2>
+            <p id="confirmMessage" class="confirm-message">Le relevé de notes a été envoyé avec succès.</p>
+            <button class="btn-neon" onclick="fermerModalConfirmation()">D'accord</button>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT                                                   -->
+    <!-- ============================================================ -->
+    <script>
+        // ── Recherche dans le tableau ──
+        function filtrerTableau() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let rows = document.querySelectorAll("#etudiantsTable tbody tr");
+            rows.forEach(row => {
+                let texte = row.innerText.toLowerCase();
+                row.style.display = texte.includes(input) ? "" : "none";
+            });
+        }
+
+        // ── Quand on choisit un matricule → remplir l'email auto ──
+        function onMatriculeChange() {
+            let select = document.getElementById("matriculeInput");
+            let option = select.options[select.selectedIndex];
+            let email = option.getAttribute("data-email") || "";
+            let niveau = option.getAttribute("data-niveau") || "L3";
+
+            // Pré-remplir l'email
+            document.getElementById("emailInput").value = email;
+
+            // Pré-sélectionner l'année selon le niveau de l'étudiant
+            let anneesSelect = document.getElementById("anneesInput");
+            for (let i = 0; i < anneesSelect.options.length; i++) {
+                if (anneesSelect.options[i].value === niveau) {
+                    anneesSelect.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        // ── Clic sur une ligne du tableau → ouvrir le modal pré-rempli ──
+        document.querySelectorAll("#etudiantsTable tbody tr").forEach(row => {
+            row.style.cursor = "pointer";
+            row.title = "Cliquer pour envoyer le relevé";
+            row.addEventListener("click", function () {
+                let matricule = this.getAttribute("data-matricule");
+                ouvrirModalFormulaire(matricule);
+            });
+        });
+
+        // ── Ouvrir / fermer modals ──
+        function ouvrirModalFormulaire(matriculePreselect) {
+            // Reset du formulaire
+            document.getElementById("formEnvoiMail").reset();
+            document.getElementById("emailInput").value = "";
+
+            // Si un matricule est passé (clic sur une ligne), le pré-sélectionner
+            if (matriculePreselect) {
+                let select = document.getElementById("matriculeInput");
+                select.value = matriculePreselect;
+                onMatriculeChange(); // remplit email + année
+            }
+
+            document.getElementById("modalFormulaire").style.display = "flex";
+        }
+
+        function fermerModalFormulaire() {
+            document.getElementById("modalFormulaire").style.display = "none";
+        }
+
+        function fermerModalConfirmation() {
+            document.getElementById("modalConfirmation").style.display = "none";
+        }
+
+        // Fermer le modal si on clique en dehors
+        document.getElementById("modalFormulaire").addEventListener("click", function (e) {
+            if (e.target === this) fermerModalFormulaire();
+        });
+        document.getElementById("modalConfirmation").addEventListener("click", function (e) {
+            if (e.target === this) fermerModalConfirmation();
+        });
+
+        // ── Soumission AJAX ──
+        function soumettreFormulaire(event) {
+            event.preventDefault();
+
+            let matricule = document.getElementById("matriculeInput").value;
+            if (!matricule) {
+                alert("Veuillez sélectionner un matricule.");
+                return;
+            }
+
+            fermerModalFormulaire();
+
+            // Afficher "en cours..."
+            document.getElementById("confirmIcon").innerText = "⏳";
+            document.getElementById("confirmTitle").innerText = "Traitement en cours...";
+            document.getElementById("confirmMessage").innerText = "Génération du PDF et envoi de l'email...";
+            document.getElementById("modalConfirmation").style.display = "flex";
+
+            // Appel API
+            fetch('/api/envoyer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(new FormData(event.target))
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.succes) {
+                    document.getElementById("confirmIcon").innerText = "✅";
+                    document.getElementById("confirmTitle").innerText = "Envoi réussi !";
+                    document.getElementById("confirmMessage").innerText = data.message;
+                } else {
+                    document.getElementById("confirmIcon").innerText = "❌";
+                    document.getElementById("confirmTitle").innerText = "Erreur";
+                    document.getElementById("confirmMessage").innerText = data.message;
+                }
+            })
+            .catch(error => {
+                document.getElementById("confirmIcon").innerText = "❌";
+                document.getElementById("confirmTitle").innerText = "Erreur réseau";
+                document.getElementById("confirmMessage").innerText = "Impossible de contacter le serveur.";
+            });
+        }
+    </script>
+</body>
+</html>

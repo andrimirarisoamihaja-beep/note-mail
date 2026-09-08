@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NOTE MAIL - Accueil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <div class="navbar-brand">NOTE MAIL</div>
+
+    <main class="hero-container">
+        <div class="hero-text">
+            <h1 class="hero-title">Envoyé les Relevé de note facilement et plus vite</h1>
+            <a th:href="@{/etudiants}" class="btn-neon">ENVOYER UN RELEVÉ DE NOTE</a>
+        </div>
+
+        <div class="hero-image-wrapper">
+            <span class="asterisk">✳</span>
+            <!-- Aperçu purement local (pas d'image externe) -->
+            <div class="hero-preview-card">
+                <div class="preview-header">Relevé de note</div>
+                <div class="preview-line"></div>
+                <div class="preview-line short"></div>
+                <div class="preview-table">
+                    <div class="preview-row header"></div>
+                    <div class="preview-row"></div>
+                    <div class="preview-row"></div>
+                    <div class="preview-row"></div>
+                    <div class="preview-row"></div>
+                </div>
+                <div class="preview-line short"></div>
+                <div class="preview-stamp">ENI</div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

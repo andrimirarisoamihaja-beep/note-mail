@@ -1,0 +1,394 @@
+/* ============================================================
+   🎨 STYLE GLOBAL - THEME DARK NEON (NOTE MAIL)
+   ============================================================ */
+:root {
+    --bg-dark: #071A10;       /* Fond vert très sombre */
+    --bg-card: #2B2B2B;       /* Fond gris foncé pour les cartes/modals */
+    --neon-green: #00FF66;    /* Vert néon vif */
+    --neon-green-hover: #00CC52;
+    --text-white: #FFFFFF;
+    --text-muted: #CCCCCC;
+    --border-green: #00FF66;
+    --gray-btn: #C4C4C4;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================================
+   🏠 PAGE 1 : ACCUEIL
+   ============================================================ */
+.navbar-brand {
+    padding: 2rem 4rem;
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: var(--neon-green);
+    text-transform: uppercase;
+}
+
+.hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 6rem;
+    flex: 1;
+    gap: 2rem;
+}
+
+.hero-text {
+    max-width: 50%;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 3rem;
+}
+
+.btn-neon {
+    background-color: var(--neon-green);
+    color: #000;
+    font-weight: 800;
+    font-size: 1.1rem;
+    padding: 1.2rem 2.5rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+}
+
+.btn-neon:hover {
+    background-color: var(--neon-green-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 255, 102, 0.7);
+}
+
+.hero-image-wrapper {
+    position: relative;
+    max-width: 45%;
+}
+
+.hero-img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transform: rotate(5deg);
+}
+
+.asterisk {
+    position: absolute;
+    top: 40%;
+    left: -10%;
+    font-size: 8rem;
+    color: var(--neon-green);
+    font-weight: bold;
+    user-select: none;
+}
+
+/* ============================================================
+   👥 PAGE 2 : LISTE DES ÉTUDIANTS
+   ============================================================ */
+.page-container {
+    padding: 2rem 5rem;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.btn-back {
+    background-color: var(--gray-btn);
+    color: #000;
+    font-weight: 700;
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    text-decoration: none;
+    border: none;
+    font-size: 1rem;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-label {
+    font-size: 2.2rem;
+    font-weight: 800;
+}
+
+.search-input {
+    border: 2px solid var(--neon-green);
+    background: #FFF;
+    color: #000;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    outline: none;
+    width: 250px;
+}
+
+/* Tableau */
+.table-container {
+    border: 2px solid var(--neon-green);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.custom-table th {
+    background-color: #FFF;
+    color: #000;
+    padding: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.custom-table td {
+    background-color: #727272;
+    color: #FFF;
+    padding: 1.2rem;
+    border-top: 2px solid var(--neon-green);
+    border-bottom: 2px solid var(--neon-green);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.custom-table tr:nth-child(even) td {
+    background-color: #5A5A5A;
+}
+
+/* ============================================================
+   🪟 MODAL (POPUP FORMULAIRE & CONFIRMATION)
+   ============================================================ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    display: none; /* Masqué par défaut */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-card {
+    background-color: var(--bg-card);
+    border-radius: 20px;
+    padding: 3rem;
+    width: 550px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.form-sublabel {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: block;
+}
+
+.form-control {
+    border: 2px solid var(--neon-green);
+    background-color: #FFF;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    width: 280px;
+    outline: none;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2.5rem;
+}
+
+.btn-cancel {
+    background-color: var(--gray-btn);
+    color: #000;
+    font-weight: 700;
+    padding: 0.8rem 2.5rem;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-send {
+    background-color: var(--neon-green);
+    color: #000;
+    font-weight: 800;
+    padding: 0.8rem 2.5rem;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* Modal Confirmation */
+.modal-confirm-content {
+    text-align: center;
+}
+
+.confirm-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.confirm-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.confirm-message {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+/* ============================================================
+   🔽 AMÉLIORATION DES LISTES DÉROULANTES
+   ============================================================ */
+select.form-control {
+    cursor: pointer;
+    appearance: auto;
+    -webkit-appearance: menulist;
+}
+
+select.form-control option {
+    background: #fff;
+    color: #000;
+    padding: 8px;
+}
+
+/* Lignes du tableau cliquables */
+#etudiantsTable tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+#etudiantsTable tbody tr:hover td {
+    background-color: #00FF66 !important;
+    color: #000 !important;
+    cursor: pointer;
+}
+
+/* Input en lecture seule (email auto) */
+input.form-control[readonly] {
+    background-color: #e8e8e8;
+    cursor: not-allowed;
+    color: #333;
+}
+/* ============================================================
+   🏠 APERÇU RELEVÉ (page d'accueil) - 100% local, sans lien externe
+   ============================================================ */
+.hero-preview-card {
+    width: 320px;
+    min-height: 420px;
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 28px 22px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+    transform: rotate(6deg);
+    position: relative;
+    color: #222;
+}
+
+.preview-header {
+    text-align: center;
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    color: #071A10;
+    margin-bottom: 18px;
+    text-decoration: underline;
+}
+
+.preview-line {
+    height: 8px;
+    background: #d0d0d0;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.preview-line.short {
+    width: 60%;
+}
+
+.preview-table {
+    margin: 18px 0;
+    border: 1.5px solid #bbb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.preview-row {
+    height: 28px;
+    background: #e8e8e8;
+    border-bottom: 1px solid #ccc;
+}
+
+.preview-row:last-child {
+    border-bottom: none;
+}
+
+.preview-row.header {
+    background: #cfcfcf;
+    height: 32px;
+}
+
+.preview-stamp {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    border: 3px solid #00FF66;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.9rem;
+    color: #00AA44;
+    opacity: 0.7;
+    transform: rotate(-15deg);
+}
